@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.utepinos.utp_ecommerce.api.shared.adapter.in.view.View;
 import com.utepinos.utp_ecommerce.api.user.application.in.CreateUserPort;
 import com.utepinos.utp_ecommerce.api.user.application.in.FindUserPort;
 import com.utepinos.utp_ecommerce.api.user.domain.model.User;
@@ -26,12 +28,15 @@ public class UserController {
   private final FindUserPort findUserPort;
 
   @PostMapping
+  @JsonView(View.Public.class) // ! Gracias a esto solo muestra datos públicos (sin password)
+
   public ResponseEntity<User> create(@RequestBody CreateUserRequest request) {
     User user = createUserPort.create(request);
     return ResponseEntity.ok(user);
   }
 
   @GetMapping("/{id}")
+  @JsonView(View.Public.class) // ! Gracias a esto solo muestra datos públicos (sin password)
   public ResponseEntity<User> findById(@PathVariable Long id) {
     return findUserPort.getById(id)
         .map(ResponseEntity::ok)
