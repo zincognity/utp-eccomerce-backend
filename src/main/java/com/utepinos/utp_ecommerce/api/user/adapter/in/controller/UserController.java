@@ -1,12 +1,15 @@
 package com.utepinos.utp_ecommerce.api.user.adapter.in.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.utepinos.utp_ecommerce.api.user.application.in.CreateUserPort;
+import com.utepinos.utp_ecommerce.api.user.application.in.FindUserPort;
 import com.utepinos.utp_ecommerce.api.user.domain.model.User;
 import com.utepinos.utp_ecommerce.api.user.domain.request.CreateUserRequest;
 
@@ -20,10 +23,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserController {
   private final CreateUserPort createUserPort;
+  private final FindUserPort findUserPort;
 
   @PostMapping
-  public ResponseEntity<User> createUser(@RequestBody CreateUserRequest request) {
+  public ResponseEntity<User> create(@RequestBody CreateUserRequest request) {
     User user = createUserPort.create(request);
     return ResponseEntity.ok(user);
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<User> findById(@PathVariable Long id) {
+    return findUserPort.getById(id)
+        .map(ResponseEntity::ok)
+        .orElseGet(() -> ResponseEntity.notFound().build());
   }
 }
