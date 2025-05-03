@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import jakarta.annotation.PostConstruct;
 
 /**
- * * Crea la tabla usuarios.
+ * * Inicializa la tabla usuarios y las relaciones de esta misma.
  */
 @Component
 public class UserTableInitializer {
@@ -16,11 +16,16 @@ public class UserTableInitializer {
 
   @PostConstruct
   public void init() {
+
+    /**
+     * * Elimina la tabla users si es que existe, debido a que será create-drop en
+     * * dev mode.
+     */
     jdbcTemplate.execute("DROP TABLE IF EXISTS users");
     jdbcTemplate.execute("DROP TYPE IF EXISTS user_role");
 
+    // * Crea el tipo y la tabla de users con sus parámetros.
     jdbcTemplate.execute("CREATE TYPE user_role AS ENUM ('MODERATOR', 'USER')");
-
     jdbcTemplate.execute("""
           CREATE TABLE users (
             id SERIAL PRIMARY KEY,

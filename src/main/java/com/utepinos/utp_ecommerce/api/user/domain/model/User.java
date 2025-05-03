@@ -24,8 +24,8 @@ public class User {
   private String name;
   private String email;
   private String phone;
-  @JsonView(View.Internal.class)
+  @JsonView(View.Internal.class) // ! Esto determina que el dato es un tipo internal o privado.
   private String password;
-  @JsonView(View.Internal.class)
+  @JsonView(View.Internal.class) // ! Esto determina que el dato es un tipo internal o privado.
   private UserRole role;
 }
