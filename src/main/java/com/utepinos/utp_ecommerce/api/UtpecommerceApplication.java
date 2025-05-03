@@ -1,10 +1,9 @@
-package com.utepinos.utp_ecommerce;
+package com.utepinos.utp_ecommerce.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import io.github.cdimascio.dotenv.Dotenv;
 
 @SpringBootApplication
@@ -20,10 +19,5 @@ public class UtpecommerceApplication {
     System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
 
     SpringApplication.run(UtpecommerceApplication.class, args);
-  }
-
-  @GetMapping("/hello")
-  public String hello(@RequestParam(value = "name") String name) {
-    return String.format("Hello %s!", name);
   }
 }

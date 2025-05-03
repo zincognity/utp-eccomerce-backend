@@ -9,7 +9,7 @@ version = '0.0.1-SNAPSHOT'
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
+		languageVersion = JavaLanguageVersion.of(17)
 	}
 }
 
@@ -22,8 +22,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter'
 	// DATABASE
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
   	implementation 'org.postgresql:postgresql'
+	// JDBC
+	implementation "org.springframework.boot:spring-boot-starter-data-jdbc"
+	// LOMBOK
+	// https://projectlombok.org
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
 	// ENV
 	implementation 'io.github.cdimascio:dotenv-java:3.0.0'
 	// TESTS
