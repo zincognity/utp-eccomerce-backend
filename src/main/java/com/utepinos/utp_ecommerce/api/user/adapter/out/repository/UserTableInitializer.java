@@ -17,6 +17,9 @@ public class UserTableInitializer {
   @PostConstruct
   public void init() {
     jdbcTemplate.execute("DROP TABLE IF EXISTS users");
+    jdbcTemplate.execute("DROP TYPE IF EXISTS user_role");
+
+    jdbcTemplate.execute("CREATE TYPE user_role AS ENUM ('MODERATOR', 'USER')");
 
     jdbcTemplate.execute("""
           CREATE TABLE users (
@@ -25,6 +28,7 @@ public class UserTableInitializer {
             email VARCHAR(60),
             phone VARCHAR(15),
             register_date TIMESTAMP NOT NULL DEFAULT CURRENT_DATE,
+            role user_role DEFAULT 'USER',
             password VARCHAR(80)
           )
         """);
