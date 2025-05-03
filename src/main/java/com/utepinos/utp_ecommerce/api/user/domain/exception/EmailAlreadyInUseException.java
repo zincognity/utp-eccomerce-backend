@@ -9,4 +9,8 @@ import lombok.Getter;
 public class EmailAlreadyInUseException extends RuntimeException {
   private final String message = "El email ya se encuentra en uso";
   private final int status = 409;
+
+  public EmailAlreadyInUseException() {
+    super();
+  }
 }
