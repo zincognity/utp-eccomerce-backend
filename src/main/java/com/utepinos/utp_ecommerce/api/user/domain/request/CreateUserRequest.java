@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * * Estructura para enviar request de creación de usuarios.
+ */
 @Getter
 @Builder
 @NoArgsConstructor

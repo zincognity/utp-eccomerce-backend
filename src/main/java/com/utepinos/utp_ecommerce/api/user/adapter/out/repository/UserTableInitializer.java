@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
 
+/**
+ * * Crea la tabla usuarios.
+ */
 @Component
 public class UserTableInitializer {
   @Autowired

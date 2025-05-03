@@ -6,6 +6,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * * Estructura de la tabla usuarios.
+ */
 @Getter
 @Builder
 @EqualsAndHashCode

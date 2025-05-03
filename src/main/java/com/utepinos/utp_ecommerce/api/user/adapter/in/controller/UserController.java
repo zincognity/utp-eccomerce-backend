@@ -12,6 +12,9 @@ import com.utepinos.utp_ecommerce.api.user.domain.request.CreateUserRequest;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * User Controller
+ */
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
