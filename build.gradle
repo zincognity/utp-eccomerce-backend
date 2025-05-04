@@ -24,7 +24,13 @@ dependencies {
 	// DATABASE
   	implementation 'org.postgresql:postgresql'
 	// JDBC
-	implementation "org.springframework.boot:spring-boot-starter-data-jdbc"
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	// SECURITY
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
+	// JWT
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	// LOMBOK
 	// https://projectlombok.org
     compileOnly 'org.projectlombok:lombok:1.18.20'

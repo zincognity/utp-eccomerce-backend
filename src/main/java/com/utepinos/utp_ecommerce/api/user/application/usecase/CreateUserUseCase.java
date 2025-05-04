@@ -3,6 +3,7 @@ package com.utepinos.utp_ecommerce.api.user.application.usecase;
 import java.util.Optional;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.utepinos.utp_ecommerce.api.user.application.in.CreateUserPort;
@@ -23,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 public final class CreateUserUseCase implements CreateUserPort {
 
   private final JdbcTemplate jdbcTemplate;
+  private final PasswordEncoder passwordEncoder;
   private final FindUserPort findUserPort;
 
   @Override
@@ -35,7 +37,7 @@ public final class CreateUserUseCase implements CreateUserPort {
         request.getName(),
         request.getEmail(),
         request.getPhone(),
-        request.getPassword());
+        passwordEncoder.encode(request.getPassword()));
 
     Optional<User> user = findUserPort.getByEmail(request.getEmail());
     if (user.isEmpty()) {

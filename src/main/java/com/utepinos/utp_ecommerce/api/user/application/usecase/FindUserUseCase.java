@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.utepinos.utp_ecommerce.api.user.application.in.FindUserPort;
 import com.utepinos.utp_ecommerce.api.user.domain.model.User;
+import com.utepinos.utp_ecommerce.api.user.domain.model.enums.UserRole;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,12 +25,14 @@ public final class FindUserUseCase implements FindUserPort {
   @Override
   public Optional<User> getByEmail(String email) {
     List<User> users = jdbcTemplate.query(
-        "SELECT id, name, email, phone FROM users WHERE email = ?",
+        "SELECT id, name, email, phone, role, password FROM users WHERE email = ?",
         (res, rowNum) -> User.builder()
             .id(res.getLong("id"))
             .name(res.getString("name"))
             .email(res.getString("email"))
             .phone(res.getString("phone"))
+            .role(UserRole.valueOf(res.getString("role")))
+            .password(res.getString("password"))
             .build(),
         email);
 
