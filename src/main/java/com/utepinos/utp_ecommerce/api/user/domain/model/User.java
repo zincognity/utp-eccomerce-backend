@@ -28,13 +28,52 @@ import lombok.NoArgsConstructor;
 @JsonView(View.Public.class)
 public class User implements UserDetails {
   private Long id;
+
   private String name;
+
   private String email;
+
   private String phone;
+
+  private UserRole role;
+
   @JsonView(View.Internal.class) // ! Esto determina que el dato es un tipo internal o privado.
   private String password;
-  @JsonView(View.Internal.class) // ! Esto determina que el dato es un tipo internal o privado.
-  private UserRole role;
+
+  @JsonView(View.Redundancy.class)
+  private List<GrantedAuthority> authorities;
+
+  @JsonView(View.Redundancy.class)
+  private Boolean accountNonLocked;
+
+  @JsonView(View.Redundancy.class)
+  private Boolean accountNonExpired;
+
+  @JsonView(View.Redundancy.class)
+  private Boolean credentialsNonExpired;
+
+  @JsonView(View.Redundancy.class)
+  private Boolean enabled;
+
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
+
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return true;
+  }
 
   /**
    * * Obtiene el nombre de usuario del usuario.

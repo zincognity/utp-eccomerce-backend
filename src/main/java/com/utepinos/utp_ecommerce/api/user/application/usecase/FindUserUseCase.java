@@ -42,12 +42,14 @@ public final class FindUserUseCase implements FindUserPort {
   @Override
   public Optional<User> getById(Long id) {
     List<User> users = jdbcTemplate.query(
-        "SELECT id, name, email, phone FROM users WHERE id = ?",
+        "SELECT id, name, email, phone, role, password FROM users WHERE id = ?",
         (res, rowNum) -> User.builder()
             .id(res.getLong("id"))
             .name(res.getString("name"))
             .email(res.getString("email"))
             .phone(res.getString("phone"))
+            .role(UserRole.valueOf(res.getString("role")))
+            .password(res.getString("password"))
             .build(),
         id);
 

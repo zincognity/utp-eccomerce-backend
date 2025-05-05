@@ -1,4 +1,4 @@
-package com.utepinos.utp_ecommerce.api.shared.domain.configuration;
+package com.utepinos.utp_ecommerce.api.shared.domain.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -75,8 +75,8 @@ public class ApplicationConfig {
    *                      administrador de autenticación.
    * @return {@link AuthenticationManager} AuthenticationManager obtenido de la
    *         configuración de autenticación.
-   * @throws Exception Si hay un error al obtener el administrador de
-   *                   autenticación.
+   * @throws {@link Exception} Si hay un error al obtener el administrador de
+   *                autenticación.
    */
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {

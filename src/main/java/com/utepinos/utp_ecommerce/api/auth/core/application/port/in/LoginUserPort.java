@@ -1,5 +1,6 @@
 package com.utepinos.utp_ecommerce.api.auth.core.application.port.in;
 
+import com.utepinos.utp_ecommerce.api.auth.core.domain.model.Jwt;
 import com.utepinos.utp_ecommerce.api.auth.core.domain.request.LoginUserRequest;
 
 /**
@@ -9,8 +10,8 @@ public interface LoginUserPort {
   /**
    * * Método para logear a un usuario.
    * 
-   * @param request
-   * @return
+   * @param request {@link LoginUserRequest} La request.
+   * @return {@link Jwt} El JWT.
    */
-  String login(LoginUserRequest request);
+  Jwt login(LoginUserRequest request);
 }

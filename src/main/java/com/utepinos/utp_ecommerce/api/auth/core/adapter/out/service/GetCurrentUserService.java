@@ -31,6 +31,9 @@ public class GetCurrentUserService implements GetCurrentUserPort {
 
     Object principal = authentication.getPrincipal();
 
+    if (principal instanceof String && "anonymousUser".equals(principal))
+      throw new GetUserWhenDoNotLoggedInException();
+
     if (principal instanceof User user)
       return new CurrentUser(user);
 

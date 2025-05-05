@@ -6,11 +6,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.utepinos.utp_ecommerce.api.auth.core.domain.request.RegisterUserRequest;
 import com.utepinos.utp_ecommerce.api.user.application.in.CreateUserPort;
 import com.utepinos.utp_ecommerce.api.user.application.in.FindUserPort;
 import com.utepinos.utp_ecommerce.api.user.domain.exception.EmailAlreadyInUseException;
+import com.utepinos.utp_ecommerce.api.user.domain.exception.ServerErrorWhileRegistering;
 import com.utepinos.utp_ecommerce.api.user.domain.model.User;
-import com.utepinos.utp_ecommerce.api.user.domain.request.CreateUserRequest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,24 +29,24 @@ public final class CreateUserUseCase implements CreateUserPort {
   private final FindUserPort findUserPort;
 
   @Override
-  public User create(CreateUserRequest request) {
+  public User create(RegisterUserRequest request) {
     if (findUserPort.exists(request.getEmail()))
       throw new EmailAlreadyInUseException();
 
-    jdbcTemplate.update(
-        "INSERT INTO users (name, email, phone, password) VALUES (?, ?, ?, ?)",
-        request.getName(),
-        request.getEmail(),
-        request.getPhone(),
-        passwordEncoder.encode(request.getPassword()));
+    try {
+      jdbcTemplate.update(
+          "INSERT INTO users (name, email, phone, password) VALUES (?, ?, ?, ?)",
+          request.getName(),
+          request.getEmail(),
+          request.getPhone(),
+          passwordEncoder.encode(request.getPassword()));
 
-    Optional<User> user = findUserPort.getByEmail(request.getEmail());
-    if (user.isEmpty()) {
-      log.warn("User not found after insert with email: {}", request.getEmail());
-      throw new IllegalStateException("User creation failed");
+      Optional<User> user = findUserPort.getByEmail(request.getEmail());
+
+      log.info("User created: {}", user.get());
+      return user.get();
+    } catch (Exception e) {
+      throw new ServerErrorWhileRegistering();
     }
-
-    log.info("User created: {}", user.get());
-    return user.get();
   }
 }

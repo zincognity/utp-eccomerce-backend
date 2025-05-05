@@ -1,16 +1,21 @@
 package com.utepinos.utp_ecommerce.api.auth.core.adapter.in.controller;
 
-import org.springframework.http.HttpStatus;
+import static com.utepinos.utp_ecommerce.api.shared.adapter.in.util.ResponseShortcuts.ok;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.utepinos.utp_ecommerce.api.auth.core.adapter.in.response.LoginUserResponse;
+import com.utepinos.utp_ecommerce.api.auth.core.adapter.in.response.RegisterUserResponse;
 import com.utepinos.utp_ecommerce.api.auth.core.application.port.in.LoginUserPort;
 import com.utepinos.utp_ecommerce.api.auth.core.application.port.in.RegisterUserPort;
+import com.utepinos.utp_ecommerce.api.auth.core.domain.exception.InvalidCredentialsException;
 import com.utepinos.utp_ecommerce.api.auth.core.domain.request.LoginUserRequest;
-import com.utepinos.utp_ecommerce.api.user.domain.request.CreateUserRequest;
+import com.utepinos.utp_ecommerce.api.auth.core.domain.request.RegisterUserRequest;
+import com.utepinos.utp_ecommerce.api.user.domain.exception.EmailAlreadyInUseException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,21 +30,14 @@ public class AuthController {
   private final LoginUserPort loginUserPort;
 
   @PostMapping("/register")
-  public ResponseEntity<String> register(@RequestBody CreateUserRequest request) {
-    try {
-      return ResponseEntity.status(HttpStatus.OK).body(registerUserPort.register(request));
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Algo ha ocurrido al registrarte");
-    }
+  public ResponseEntity<RegisterUserResponse> register(@RequestBody RegisterUserRequest request)
+      throws EmailAlreadyInUseException {
+    return ok(() -> registerUserPort.register(request), "Usuario registrado exitosamente");
   }
 
   @PostMapping("/login")
-  public ResponseEntity<String> login(@RequestBody LoginUserRequest request) {
-    try {
-      String jwt = loginUserPort.login(request);
-      return ResponseEntity.status(HttpStatus.OK).body(jwt);
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
-    }
+  public ResponseEntity<LoginUserResponse> login(@RequestBody LoginUserRequest request)
+      throws InvalidCredentialsException {
+    return ok(() -> loginUserPort.login(request), "Usuario logeado exitosamente");
   }
 }

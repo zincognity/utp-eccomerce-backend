@@ -10,9 +10,7 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.utepinos.utp_ecommerce.api.auth.core.domain.model.Jwt;
-import com.utepinos.utp_ecommerce.api.shared.adapter.in.view.View;
 import com.utepinos.utp_ecommerce.api.user.domain.model.User;
 import com.utepinos.utp_ecommerce.api.user.domain.model.enums.UserRole;
 
@@ -25,7 +23,7 @@ import io.jsonwebtoken.security.MacAlgorithm;
  * * Clase utilitaria para la generación y validación de jwt.
  */
 @Service
-public class JwtUtil {
+public class JwtUtils {
   @Value("${spring.security.jwt.secret}")
   private String JWT_SECRET;
   @Value("${spring.security.jwt.expiration}")
@@ -35,9 +33,8 @@ public class JwtUtil {
    * * Genera un jwt para el usuario proporcionado.
    * 
    * @param user {@link User} El usuario.
-   * @return {@link Jwt} El jwt generado.
+   * @return {@link Jwt} JWT generado.
    */
-  @JsonView(View.Public.class)
   public String generateToken(User user) {
     Date issueAt = new Date(System.currentTimeMillis());
     Date expiration = new Date(System.currentTimeMillis() + JWT_EXPIRATION);
@@ -58,7 +55,7 @@ public class JwtUtil {
 
   /**
    * * Verifica si el token JWT proporcionado es válido para el usuario
-   * proporcionado.
+   * * proporcionado.
    *
    * @param token {@link Jwt} El token JWT a validar.
    * @param user  {@link User} Los detalles del usuario para validar
@@ -95,16 +92,11 @@ public class JwtUtil {
       String userPhone = userClaims.containsKey("phone") ? userClaims.get("phone").toString() : null;
       String userRoleString = userClaims.containsKey("role") ? userClaims.get("role").toString() : null;
 
-      if (userId == null || userName == null || userEmail == null || userRoleString == null) {
+      if (userId == null || userName == null || userEmail == null || userRoleString == null)
         throw new IllegalArgumentException("Missing required claim values in token.");
-      }
 
       UserRole userRole;
-      try {
-        userRole = UserRole.valueOf(userRoleString);
-      } catch (IllegalArgumentException e) {
-        throw new IllegalArgumentException("Invalid user role in token.", e);
-      }
+      userRole = UserRole.valueOf(userRoleString);
 
       return User.builder()
           .id(userId)
